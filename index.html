@@ -3,27 +3,19 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Wedding Invitation</title>
+<title>Invitation</title>
 
 <style>
 
-/* ===== PAGE ===== */
-
+/* ===== BASE ===== */
 html, body {
     margin: 0;
-    width: 100%;
     height: 100%;
     overflow: hidden;
-}
-
-body {
-    position: relative;
     background: white;
 }
 
-/* ===== ENVELOPE HALVES ===== */
-
+/* ===== ENVELOPE PANELS ===== */
 .panel {
     position: absolute;
     top: 0;
@@ -31,51 +23,45 @@ body {
     height: 100%;
     background-size: cover;
     background-position: center;
-    background-repeat: no-repeat;
-    z-index: 5;
     transition: transform 1.2s ease;
 }
 
 .left {
     left: 0;
     background-image: url("left.png");
+    box-shadow: 20px 0 25px rgba(0,0,0,0.25);
 }
 
 .right {
     right: 0;
     background-image: url("right.png");
+    box-shadow: -20px 0 25px rgba(0,0,0,0.25);
 }
 
-/* ===== WAX SEAL ===== */
-
+/* ===== SEAL ===== */
 .seal {
     position: absolute;
     top: 50%;
     left: 50%;
     width: 140px;
     transform: translate(-50%, -50%);
-    cursor: pointer;
     z-index: 10;
-    transition: opacity 0.4s ease;
+    cursor: pointer;
 }
 
 /* ===== TAP TEXT ===== */
-
 .tap-text {
     position: absolute;
-    top: calc(50% + 100px);
+    top: calc(50% + 90px);
     left: 50%;
     transform: translateX(-50%);
     font-family: Garamond, serif;
-    font-size: 22px;
+    font-size: 20px;
     color: black;
-    letter-spacing: 1px;
     z-index: 10;
-    transition: opacity 0.4s ease;
 }
 
 /* ===== OPEN ANIMATION ===== */
-
 .open .left {
     transform: translateX(-100%);
 }
@@ -87,6 +73,15 @@ body {
 .open .seal,
 .open .tap-text {
     opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+/* ===== FLIPBOOK CONTAINER ===== */
+#flipbook-container {
+    position: absolute;
+    inset: 0;
+    display: none;
+    z-index: 1;
 }
 
 </style>
@@ -94,23 +89,17 @@ body {
 
 <body>
 
-<!-- LEFT HALF -->
+<!-- ENVELOPE -->
 <div class="panel left"></div>
-
-<!-- RIGHT HALF -->
 <div class="panel right"></div>
 
-<!-- WAX SEAL -->
-<img
-    src="seal.png"
-    alt="Wax Seal"
-    class="seal"
-    onclick="openEnvelope()"
->
+<img src="seal.png" class="seal" onclick="openEnvelope()">
 
-<!-- TEXT -->
-<div class="tap-text">
-    TAP TO OPEN
+<div class="tap-text">TAP TO OPEN</div>
+
+<!-- FLIPBOOK EMBED -->
+<div id="flipbook-container">
+    <iframe allowfullscreen="allowfullscreen" allow="clipboard-write" scrolling="no" class="fp-iframe" src="https://heyzine.com/flip-book/d974c4d591.html" style="border: 1px solid lightgray; width: 100%; height: 400px;"></iframe>
 </div>
 
 <script>
@@ -119,11 +108,16 @@ function openEnvelope() {
 
     document.body.classList.add("open");
 
-    setTimeout(function () {
+    setTimeout(() => {
 
-        window.location.href = "https://heyzine.com/flip-book/d974c4d591.html";
+        document.querySelector(".panel.left").style.display = "none";
+        document.querySelector(".panel.right").style.display = "none";
+        document.querySelector(".seal").style.display = "none";
+        document.querySelector(".tap-text").style.display = "none";
 
-    }, 1400);
+        document.getElementById("flipbook-container").style.display = "block";
+
+    }, 1200);
 
 }
 
